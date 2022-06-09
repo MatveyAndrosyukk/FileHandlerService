@@ -26,15 +26,11 @@ public class FileController {
     }
 
     @PostMapping()
-    public ResponseEntity<FileResponseData> getFile(@RequestParam("file") MultipartFile file) throws FileNotFoundException {
+    public ResponseEntity<FileResponseData> getFile(@RequestParam("file") MultipartFile file) throws IOException {
         ArrayList<Chapter> chapters = new ArrayList<>();
 
-        try {
-            fileService.saveFile(file);
-            chapters = fileService.getChapters(chapters, file);
-        } catch (IOException e) {
-            throw new FileNotFoundException("File does not exists");
-        }
+        fileService.saveFile(file);
+        chapters = fileService.getChapters(chapters, file);
 
         FileResponseData responseData = new FileResponseData(chapters);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
